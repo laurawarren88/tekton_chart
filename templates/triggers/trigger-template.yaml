@@ -1,0 +1,97 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: trigger-template
+  namespace: lmw-fitness
+spec:
+  params:
+  - name: GITHUB_CLONE_URL
+    description: The GitHub repository URL to clone
+  - name: SONAR_HOST_URL
+    description: The SonarQube server URL
+  - name: PROJECT_KEY
+    description: The project key in SonarQube
+  - name: DOCKER_IMAGE
+    description: The container registry where the image will be pushed
+  - name: NEXUS_IMAGE
+    description: The image reference to push to the registry
+  - name: DOCKERFILE
+    description: The path to the Dockerfile to build
+  - name: CONTEXT
+    description: The build context used by Kaniko.
+  - name: BUILDER_IMAGE
+    description: The image to use for the Kaniko builder
+  - name: TRIVY_SEVERITY
+    description: The severity levels to scan for vulnerabilities
+  - name: VALUES_MANIFEST_PATH
+    description: The Helm values file
+  - name: VALUES_PATH_TO_IMAGE
+    description: The path to the image field in the values file
+  - name: RELEASE_NAME
+    description: The name of the Helm release
+  - name: CHART_DIR
+    description: The directory containing the Helm chart
+  - name: NAMESPACE
+    description: The Kubernetes namespace
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1
+    kind: PipelineRun
+    metadata:
+      generateName: build-test-deploy-pipeline-run-
+      namespace: lmw-fitness
+    spec:
+      pipelineRef:
+        name: build-test-deploy-pipeline
+      params:
+      - name: GITHUB_CLONE_URL
+        value: $(tt.params.GITHUB_CLONE_URL)
+      - name: SONAR_HOST_URL
+        value: $(tt.params.SONAR_HOST_URL)
+      - name: PROJECT_KEY
+        value: $(tt.params.PROJECT_KEY)
+      - name: DOCKER_IMAGE
+        value: $(tt.params.DOCKER_IMAGE)
+      - name: NEXUS_IMAGE
+        value: $(tt.params.NEXUS_IMAGE)
+      - name: DOCKERFILE
+        value: $(tt.params.DOCKERFILE)
+      - name: CONTEXT
+        value: $(tt.params.CONTEXT)
+      - name: BUILDER_IMAGE
+        value: $(tt.params.BUILDER_IMAGE)
+      - name: TRIVY_SEVERITY
+        value: $(tt.params.TRIVY_SEVERITY)
+      - name: VALUES_MANIFEST_PATH
+        value: $(tt.params.VALUES_MANIFEST_PATH)
+      - name: VALUES_PATH_TO_IMAGE
+        value: $(tt.params.VALUES_PATH_TO_IMAGE)
+      - name: RELEASE_NAME
+        value: $(tt.params.RELEASE_NAME)
+      - name: CHART_DIR
+        value: $(tt.params.CHART_DIR)
+      - name: NAMESPACE
+        value: $(tt.params.NAMESPACE)
+      workspaces:
+        - name: source
+          volumeClaimTemplate:
+            metadata:
+              creationTimestamp: null
+            spec:
+              accessModes:
+                - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 1Gi
+              storageClassName: nfs-csi
+        - name: git-credentials
+          secret:
+            secretName: git-credentials
+        - name: docker-config
+          secret:
+            secretName: docker-config
+        - name: nexus-credentials
+          secret:
+            secretName: nexus-credentials
+        - name: docker-credentials
+          secret:
+            secretName: docker-credentials

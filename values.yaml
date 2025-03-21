@@ -1,0 +1,53 @@
+replicaCount: 1
+
+Nexus:
+  storageClass: nfs-csi
+  storageSize: 5Gi
+  uiPort: 8081
+  dockerPath: /v2/
+  dockerPort: 8082
+  host: lmw.nexus.hyades.clusters.easlab.co.uk
+  secretName: lmw-nexus-tls
+
+
+# This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# This is for setting Kubernetes Annotations to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+podAnnotations: {}
+# This is for setting Kubernetes Labels to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+ingress:
+  # enabled: false
+  className: nginx
+  annotations: {}
+  host: trigger.lmw-fitness.hyades.clusters.easlab.co.uk
+  serviceName: el-eventlistener
+  servicePort: 8080
+  path: /
+  pathType: Prefix
+  # tls: []
+  secretName: trigger-lmw-fitness-tls

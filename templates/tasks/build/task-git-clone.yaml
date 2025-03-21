@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: git-clone
+  namespace: lmw-fitness
+spec:
+  params:
+  - name: GITHUB_CLONE_URL
+    type: string
+    description: The URL of the GitHub repository to clone
+  steps:
+  - name: git-clone
+    image: alpine/git
+    script: |
+      #!/bin/sh
+      git clone $(inputs.params.GITHUB_CLONE_URL) $(workspaces.source.path)
+      cd $(workspaces.source.path)
+      echo "Repository cloned to $(workspaces.source.path)"
+  workspaces:
+  - name: git-credentials
+  - name: source

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexus
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: nexus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nexus
+  template:
+    metadata:
+      labels:
+        app: nexus
+    spec:
+      volumes:
+        - name: nexus-data
+          persistentVolumeClaim:
+            claimName: nexus-pvc
+      containers:
+      - image: sonatype/nexus3
+        name: nexus
+        ports:
+          - containerPort: {{ .Values.Nexus.uiPort }}
+            protocol: TCP
+        volumeMounts:
+        - name: nexus-data 
+          mountPath: /sonatype-work/nexus3
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "500m"
+          limits:
+            memory: "4Gi"
+            cpu: "1000m"

@@ -1,0 +1,35 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: trigger-binding
+  namespace: lmw-fitness
+spec:
+  params:
+    - name: GITHUB_CLONE_URL
+      value: $(body.repository.clone_url)
+    - name: SONAR_HOST_URL
+      value: "http://sonarqube-sonarqube.lmw-fitness.svc.cluster.local:9000"
+    - name: PROJECT_KEY
+      value: "fitness-locator"
+    - name: DOCKER_IMAGE
+      value: "index.docker.io/lmwcode/$(body.repository.name):$(body.head_commit.id)"
+    - name: NEXUS_IMAGE
+      value: "lmw.nexus.hyades.clusters.easlab.co.uk/$(body.repository.name):$(body.head_commit.id)"
+    - name: DOCKERFILE
+      value: Dockerfile
+    - name: CONTEXT
+      value: "."
+    - name: BUILDER_IMAGE
+      value: "gcr.io/kaniko-project/executor:v1.5.1@sha256:c6166717f7fe0b7da44908c986137ecfeab21f31ec3992f6e128fff8a94be8a5"
+    - name: TRIVY_SEVERITY
+      value: "CRITICAL,HIGH"
+    - name: VALUES_MANIFEST_PATH
+      value: "helm_chart/values.yaml"
+    - name: VALUES_PATH_TO_IMAGE
+      value: ".image.repository"
+    - name: RELEASE_NAME
+      value: $(body.repository.name)
+    - name: CHART_DIR
+      value: "helm_chart"
+    - name: NAMESPACE
+      value: "lmw-fitness"

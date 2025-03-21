@@ -1,0 +1,35 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nexus-ingress
+  namespace: {{ .Values.namespace }}
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-http01
+    cert-manager.io/acme-challenge-type: http01
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  rules:
+  - host: {{ .Values.Nexus.host }}
+    http:
+      paths:
+        - path: {{ .Values.ingress.path }}
+          pathType: {{ .Values.ingress.pathType }}
+          backend:
+            service:
+              name: nexus-service
+              port:
+                number: {{  .Values.Nexus.uiPort }}
+        - path: {{ .Values.Nexus.dockerPath }}
+          pathType: {{ .Values.ingress.pathType }}
+          backend:
+            service:
+              name: nexus-service
+              port:
+                number: {{  .Values.Nexus.dockerPort }}
+  tls:
+    - hosts:
+        - {{ .Values.Nexus.host }}
+      secretName: {{ .Values.Nexus.secretName }}

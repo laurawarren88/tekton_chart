@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: trivy-scan
+  namespace: lmw-fitness
+spec:
+  description: Scans a built image for vulnerabilities using Trivy.
+  params:
+    - name: NEXUS_IMAGE
+      type: string
+      description: The image reference to scan.
+    - name: TRIVY_SEVERITY
+      type: string
+      description: Comma-separated list of severities to scan for.
+  steps:
+    - name: trivy-scan
+      image: aquasec/trivy:latest
+      script: |
+        #!/bin/sh
+        set -e
+        trivy image --scanners vuln --exit-code 1 --severity $(params.TRIVY_SEVERITY) $(params.NEXUS_IMAGE)

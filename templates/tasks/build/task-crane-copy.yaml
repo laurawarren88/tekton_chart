@@ -1,0 +1,72 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: crane-copy
+  namespace: lmw-fitness
+spec:
+  params:
+    - name: NEXUS_IMAGE
+      type: string
+      description: The source image to copy or manage.
+    - name: DOCKER_IMAGE
+      type: string
+      description: The target image to copy to.
+  workspaces:
+    - name: docker-credentials
+      description: The docker credentials file.
+    - name: nexus-credentials
+      description: The nexus credentials file.
+  steps:
+    - name: docker-login
+      image: gcr.io/go-containerregistry/crane/debug:latest
+      command: ["crane"]
+      args:
+        - auth
+        - login
+        - index.docker.io
+        - -u
+        - $(cat $(workspaces.docker-credentials.path)/username)
+        - -p
+        - $(cat $(workspaces.docker-credentials.path)/password)
+      resources:
+        requests:
+          memory: "64Mi"
+          cpu: "0.1"
+        limits:
+          memory: "128Mi"
+          cpu: "0.2"
+    
+    - name: nexus-login
+      image: gcr.io/go-containerregistry/crane/debug:latest
+      command: ["crane"]
+      args:
+        - auth
+        - login
+        - lmw.nexus.hyades.clusters.easlab.co.uk
+        - -u
+        - $(cat $(workspaces.nexus-credentials.path)/username)
+        - -p
+        - $(cat $(workspaces.nexus-credentials.path)/password)
+      resources:
+        requests:
+          memory: "64Mi"
+          cpu: "0.1"
+        limits:
+          memory: "128Mi"
+          cpu: "0.2"
+
+    - name: crane-copy
+      image: gcr.io/go-containerregistry/crane/debug:latest
+      command: ["crane"]
+      args: 
+        - copy
+        - $(params.NEXUS_IMAGE)
+        - $(params.DOCKER_IMAGE)
+        - -v
+      resources:
+        requests:
+          memory: "128Mi"
+          cpu: "0.5"
+        limits:
+          memory: "256Mi"
+          cpu: "1"

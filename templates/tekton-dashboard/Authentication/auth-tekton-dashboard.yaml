@@ -1,0 +1,51 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-http01
+    field.cattle.io/publicEndpoints: '[{"addresses":["172.16.6.202","172.16.6.205","172.16.6.206","172.16.6.207","172.16.6.223","172.16.6.224","172.16.6.225","172.16.6.226","172.16.6.227"],"port":80,"protocol":"HTTP","serviceName":"tools:oauth2-proxy","ingressName":"tools:oauth2-proxy","hostname":"oauth.hyades.clusters.easlab.co.uk","path":"/","allNodes":false}]'
+    meta.helm.sh/release-name: oauth2-proxy
+    meta.helm.sh/release-namespace: tools
+    nginx.ingress.kubernetes.io/auth-signin: https://tekton.hyades.clusters.easlab.co.uk/oauth2/sign_in?rd=https://
+    nginx.ingress.kubernetes.io/auth-url: https://tekton.hyades.clusters.easlab.co.uk/oauth2/auth
+  generation: 2
+  labels:
+    app: oauth2-proxy
+    app.kubernetes.io/component: authentication-proxy
+    app.kubernetes.io/instance: oauth2-proxy
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: oauth2-proxy
+    app.kubernetes.io/part-of: oauth2-proxy
+    app.kubernetes.io/version: 7.5.1
+    helm.sh/chart: oauth2-proxy-6.19.1
+  name: tekton-dashboard-ingress
+  namespace: tools
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: tekton.hyades.clusters.easlab.co.uk
+    http:
+      paths:
+      - backend:
+          service:
+            name: oauth2-proxy
+            port:
+              number: 80
+        path: /
+        pathType: ImplementationSpecific
+  tls:
+  - hosts:
+    - tekton.hyades.clusters.easlab.co.uk
+    secretName: tekton-dashboard-tls
+status:
+  loadBalancer:
+    ingress:
+    - ip: 172.16.6.202
+    - ip: 172.16.6.205
+    - ip: 172.16.6.206
+    - ip: 172.16.6.207
+    - ip: 172.16.6.223
+    - ip: 172.16.6.224
+    - ip: 172.16.6.225
+    - ip: 172.16.6.226
+    - ip: 172.16.6.227

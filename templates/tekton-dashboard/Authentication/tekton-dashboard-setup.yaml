@@ -1,0 +1,44 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-http01
+    field.cattle.io/publicEndpoints: '[{"addresses":["172.16.6.202","172.16.6.205","172.16.6.206","172.16.6.207","172.16.6.223","172.16.6.224","172.16.6.225","172.16.6.226","172.16.6.227"],"port":443,"protocol":"HTTPS","serviceName":"tekton-pipelines:tekton-dashboard","ingressName":"tekton-pipelines:hello-world-ingress","hostname":"tekton.hyades.clusters.easlab.co.uk","path":"/","allNodes":false}]'
+    objectset.rio.cattle.io/applied: H4sIAAAAAAAA/4yRMY/bPAyG/wtnyxcnjhN7/aZvOXQouhQZKJmJVSuSIDJ3FwT+7wWT9Lq0QDcK4vvwAXkDzP4bFfYpwgCR5D2V2cdTPe+59unlrYEKZh9HGOD/eCrEDBWcSXBEQRhugDEmQfEpsj4dFTFnjHiiogAXLixUjGe+UIEBAglTdOWaxUwieaUTkv1BTpikLj7VDkUCadrrXGr2m3Xb92ZHu6NpXbs2+32P5miJ9l03Uts7WCoIaCncJf6Gm5AnBa5ai81m3dkNbtqmd9td2/Td1jo3Nm13tK7ZjN24VWjEM8EAE4WQzHsqYTT+cw/6yRmddgjNkqLJPlPwkVjDnMmpzzPxX0Dm1wcwnnz8gArKJRDD8P0GU2L55NTTFUfi+rk+rgk5oK1dqi8zVKCbU3JGmR5xi24mvdMNmMqbV6nbL/2n3Ig82YRlhApyKnLvuJytHqZf9btlWao7EgZ4gUf59ZqV8KXQ0X/AcliWQwUSfjtr9U/WhwqYXCF5/bOUUaoO+BkAAP//LL2KNpYCAAA
+    objectset.rio.cattle.io/id: e1832499-7e7f-4c42-889a-fbee866de49c
+    nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.tools.svc.cluster.local/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "http://auth.hyades.clusters.easlab.co.uk/oauth2/sign_in?rd=https://auth.hyades.clusters.easlab.co.uk"
+  generation: 1
+  labels:
+    objectset.rio.cattle.io/hash: e04ba1326b3a3419c5741965bccd146fbc13d6d5
+  name: tekton-dashboard-ingress
+  namespace: tekton-pipelines
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: tekton.hyades.clusters.easlab.co.uk
+    http:
+      paths:
+      - backend:
+          service:
+            name: tekton-dashboard
+            port:
+              number: 9097
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - tekton.hyades.clusters.easlab.co.uk
+    secretName: tekton-dashboard-tls
+status:
+  loadBalancer:
+    ingress:
+    - ip: 172.16.6.202
+    - ip: 172.16.6.205
+    - ip: 172.16.6.206
+    - ip: 172.16.6.207
+    - ip: 172.16.6.223
+    - ip: 172.16.6.224
+    - ip: 172.16.6.225
+    - ip: 172.16.6.226
+    - ip: 172.16.6.227
