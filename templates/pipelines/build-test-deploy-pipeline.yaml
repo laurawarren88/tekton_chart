@@ -53,9 +53,9 @@ spec:
   workspaces:
     - name: git-credentials
     - name: source
-    - name: docker-config
+    - name: kaniko-config
+    - name: image-credentials
     - name: nexus-credentials
-    - name: docker-credentials
   tasks:
     - name: git-clone
       taskRef:
@@ -92,8 +92,8 @@ spec:
       workspaces:
       - name: source
         workspace: source
-      - name: docker-config
-        workspace: docker-config
+      - name: kaniko-config
+        workspace: kaniko-config
       - name: nexus-credentials
         workspace: nexus-credentials
       params:
@@ -114,10 +114,8 @@ spec:
         name: crane-copy
         kind: Task
       workspaces:
-      - name: docker-credentials
-        workspace: docker-credentials
-      - name: nexus-credentials
-        workspace: nexus-credentials
+      - name: image-credentials
+        workspace: image-credentials
       params:
       - name: NEXUS_IMAGE
         value: "$(params.NEXUS_IMAGE)"  

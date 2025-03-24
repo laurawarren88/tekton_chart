@@ -62,9 +62,9 @@ spec:
   workspaces:
     - description: Holds the context and Dockerfile
       name: source
-    - description: Includes a docker `config.json`
+    - description: Includes a docker config.json file
       mountPath: /kaniko/.docker
-      name: docker-config
+      name: kaniko-config
       optional: true
     - description: Holds the docker/Nexus credentials
       name: nexus-credentials

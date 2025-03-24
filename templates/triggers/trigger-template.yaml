@@ -86,12 +86,15 @@ spec:
         - name: git-credentials
           secret:
             secretName: git-credentials
-        - name: docker-config
+        - name: kaniko-config
           secret:
-            secretName: docker-config
+            secretName: kaniko-config
         - name: nexus-credentials
           secret:
             secretName: nexus-credentials
-        - name: docker-credentials
+        - name: image-credentials
           secret:
-            secretName: docker-credentials
+            secretName: image-credentials
+            items:
+              - key: config.json
+                path: config.json

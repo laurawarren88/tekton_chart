@@ -12,7 +12,7 @@ spec:
     - name: PROJECT_KEY
       value: "fitness-locator"
     - name: DOCKER_IMAGE
-      value: "index.docker.io/lmwcode/$(body.repository.name):$(body.head_commit.id)"
+      value: "docker.io/lmwcode/$(body.repository.name):$(body.head_commit.id)"
     - name: NEXUS_IMAGE
       value: "lmw.nexus.hyades.clusters.easlab.co.uk/$(body.repository.name):$(body.head_commit.id)"
     - name: DOCKERFILE
