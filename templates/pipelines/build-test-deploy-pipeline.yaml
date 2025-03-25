@@ -65,6 +65,9 @@ spec:
     - name: COMMIT_MESSAGE
       type: string
       description: "The commit message for the image update"
+    - name: SERVICE_TYPE
+      type: string
+      description: "The type of service"
   workspaces:
     - name: git-credentials
     - name: helm-chart
@@ -186,7 +189,7 @@ spec:
         - name: VALUES_MANIFEST_PATH
           value: $(params.VALUES_MANIFEST_PATH)
         - name: VALUES_PATH_TO_IMAGE
-          value: $(params.VALUES_PATH_TO_IMAGE)
+          value: "$(params.SERVICE_TYPE == 'backend' ? '.api.image.repository' : '.webserver.image.repository')"
         - name: NEXUS_IMAGE
           value: $(params.NEXUS_IMAGE)
       workspaces:

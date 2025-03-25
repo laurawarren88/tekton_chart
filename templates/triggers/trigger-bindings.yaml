@@ -30,7 +30,7 @@ spec:
     - name: SERVICE_TYPE
       value: $(body.repository.description)
     - name: VALUES_PATH_TO_IMAGE
-      value: "$(body.repository.description == 'backend' ? '.api.image.repository' : '.webserver.image.repository')"
+      value: ".image.repository"
     - name: RELEASE_NAME
       value: $(body.repository.name)
     - name: CHART_DIR
