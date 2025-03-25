@@ -44,12 +44,6 @@ spec:
     - name: SERVICE_TYPE
       type: string
       description: "The type of service to deploy"
-    - name: GITHUB_EMAIL
-      type: string
-      description: "The email address for the git commit"
-    - name: GITHUB_USERNAME
-      type: string
-      description: "The username for the git commit"
     - name: HELM_FILE
       type: string
       description: "Path to the Helm file to commit"
@@ -190,10 +184,6 @@ spec:
         name: commit-helm-changes
         kind: Task
       params:
-        - name: GITHUB_EMAIL
-          value: $(params.GITHUB_EMAIL)
-        - name: GITHUB_USERNAME
-          value: $(params.GITHUB_USERNAME)
         - name: HELM_FILE
           value: $(params.HELM_FILE)
         - name: COMMIT_MESSAGE
