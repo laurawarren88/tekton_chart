@@ -26,7 +26,7 @@ spec:
     - name: TRIVY_SEVERITY
       value: "CRITICAL,HIGH"
     - name: VALUES_MANIFEST_PATH
-      value: "helm-chart/values.yaml"
+      value: "values.yaml"
     - name: SERVICE_TYPE
       value: $(body.repository.description)
     - name: RELEASE_NAME
