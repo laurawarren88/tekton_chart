@@ -13,14 +13,11 @@ spec:
         - ref:
             name: github
           params:
-            - name: eventTypes
-              value: ["pull_request", "push", "repository"]
-        - ref:
-            name: "cel"
-          params:
-            - name: "overlays"
+            - name: secretRef
               value:
-                - key: "debug"
-                  expression: "body"
+                secretName: github-secret
+                secretKey: secret
+            - name: eventTypes
+              value: ["push"]
       template:
         ref: trigger-template
