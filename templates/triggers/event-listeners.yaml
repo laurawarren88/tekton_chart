@@ -13,21 +13,14 @@ spec:
         - ref:
             name: github
           params:
-            - name: secretRef
-              value:
-                secretName: github-secret
-                secretKey: secret
             - name: eventTypes
-              value: ["push"]
-            - name: addChangedFiles
-              value: ["true"]
-            - name: githubOrg
-              value: ["laurawarren88"]
-            - name: githubRepo
-              value: ["backend-go-fitness-locator"]
-            - name: debug
-              value: "true"
-            - name: validatePayload
-              value: ["false"]
+              value: ["pull_request", "push", "repository"]
+        - ref:
+            name: "cel"
+          params:
+            - name: "overlays"
+              value:
+                - key: "debug"
+                  expression: "body"
       template:
         ref: trigger-template
