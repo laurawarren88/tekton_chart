@@ -21,5 +21,9 @@ spec:
               value: ["push"]
             - name: addChangedFiles
               value: ["true"]
+            - name: githubOrg
+              value: ["laurawarren88"]
+            - name: githubRepo
+              value: ["backend-go-fitness-locator"]
       template:
         ref: trigger-template
