@@ -200,9 +200,9 @@ spec:
         kind: Task
       params:
         - name: GITHUB_EMAIL
-          value: $(params.GIT_EMAIL)
+          value: $(params.GITHUB_EMAIL)
         - name: GITHUB_USERNAME
-          value: $(params.GIT_USERNAME)
+          value: $(params.GITHUB_USERNAME)
         - name: HELM_FILE
           value: $(params.HELM_FILE)
         - name: COMMIT_MESSAGE

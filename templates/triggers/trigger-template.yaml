@@ -84,9 +84,9 @@ spec:
       - name: NAMESPACE
         value: $(tt.params.NAMESPACE)
       - name: GITHUB_EMAIL
-        value: $(tt.params.GIT_EMAIL)
+        value: $(tt.params.GITHUB_EMAIL)
       - name: GITHUB_USERNAME
-        value: $(tt.params.GIT_USERNAME)
+        value: $(tt.params.GITHUB_USERNAME)
       - name: HELM_FILE
         value: $(tt.params.HELM_FILE)
       - name: COMMIT_MESSAGE
