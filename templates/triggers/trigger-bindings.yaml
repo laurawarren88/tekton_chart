@@ -7,6 +7,8 @@ spec:
   params:
     - name: GITHUB_CLONE_URL
       value: $(body.repository.clone_url)
+    - name: GITHUB_HELM_URL
+      value: "https://github.com/laurawarren88/helm-chart.git"
     - name: SONAR_HOST_URL
       value: "http://sonarqube-sonarqube.lmw-fitness.svc.cluster.local:9000"
     - name: PROJECT_KEY
@@ -24,12 +26,25 @@ spec:
     - name: TRIVY_SEVERITY
       value: "CRITICAL,HIGH"
     - name: VALUES_MANIFEST_PATH
-      value: "helm_chart/values.yaml"
+      value: "lmw-helm-chart/values.yaml"
+    - name: SERVICE_TYPE
+      value: $(body.repository.description)
     - name: VALUES_PATH_TO_IMAGE
-      value: ".image.repository"
+      value: "$(body.repository.description == 'backend' && '.api.image.repository' || '.webserver.image.repository')"
     - name: RELEASE_NAME
       value: $(body.repository.name)
     - name: CHART_DIR
       value: "helm_chart"
     - name: NAMESPACE
       value: "lmw-fitness"
+    - name: GIT_EMAIL
+      value: laura@enterpriseautomation.co.uk
+    - name: GIT_USERNAME
+      value: laurawarren88
+    - name: HELM_FILE
+      value: "lmw-helm-chart/"
+    - name: COMMIT_MESSAGE
+      value: "Update image in Helm chart"
+
+    
+      

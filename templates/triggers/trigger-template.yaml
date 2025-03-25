@@ -7,6 +7,8 @@ spec:
   params:
   - name: GITHUB_CLONE_URL
     description: The GitHub repository URL to clone
+  - name: GITHUB_HELM_URL
+    description: The Helm chart repository URL to clone
   - name: SONAR_HOST_URL
     description: The SonarQube server URL
   - name: PROJECT_KEY
@@ -33,6 +35,14 @@ spec:
     description: The directory containing the Helm chart
   - name: NAMESPACE
     description: The Kubernetes namespace
+  - name: GIT_EMAIL
+    description: The email address for the git commit
+  - name: GIT_USERNAME
+    description: The username for the git commit
+  - name: HELM_FILE
+    description: The path to the Helm file to commit
+  - name: COMMIT_MESSAGE
+    description: The commit message for the image update
   resourcetemplates:
   - apiVersion: tekton.dev/v1
     kind: PipelineRun
@@ -45,6 +55,8 @@ spec:
       params:
       - name: GITHUB_CLONE_URL
         value: $(tt.params.GITHUB_CLONE_URL)
+      - name: GITHUB_HELM_URL
+        value: $(tt.params.GITHUB_HELM_URL)
       - name: SONAR_HOST_URL
         value: $(tt.params.SONAR_HOST_URL)
       - name: PROJECT_KEY
@@ -71,8 +83,27 @@ spec:
         value: $(tt.params.CHART_DIR)
       - name: NAMESPACE
         value: $(tt.params.NAMESPACE)
+      - name: GIT_EMAIL
+        value: $(tt.params.GIT_EMAIL)
+      - name: GIT_USERNAME
+        value: $(tt.params.GIT_USERNAME)
+      - name: HELM_FILE
+        value: $(tt.params.HELM_FILE)
+      - name: COMMIT_MESSAGE
+        value: $(tt.params.COMMIT_MESSAGE)
       workspaces:
         - name: source
+          volumeClaimTemplate:
+            metadata:
+              creationTimestamp: null
+            spec:
+              accessModes:
+                - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 1Gi
+              storageClassName: nfs-csi
+        - name: helm-chart
           volumeClaimTemplate:
             metadata:
               creationTimestamp: null

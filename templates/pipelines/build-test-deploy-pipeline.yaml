@@ -11,6 +11,9 @@ spec:
     - name: GITHUB_CLONE_URL
       type: string
       description: "The URL of the Git repository"
+    - name: GITHUB_HELM_URL
+      type: string
+      description: "The URL of the Git repository"
     - name: SONAR_HOST_URL
       type: string
       description: "SonarQube server URL"
@@ -52,6 +55,7 @@ spec:
       description: "Kubernetes namespace for the release"
   workspaces:
     - name: git-credentials
+    - name: helm-chart
     - name: source
     - name: kaniko-config
     - name: image-credentials
@@ -69,6 +73,19 @@ spec:
           workspace: git-credentials
         - name: source
           workspace: source
+
+    - name: helm-chart-clone
+      taskRef:
+        name: helm-chart-clone
+        kind: Task
+      params:
+        - name: GITHUB_HELM_URL
+          value: $(params.GITHUB_HELM_URL)
+      workspaces:
+        - name: helm-chart
+          workspace: helm-chart
+        - name: git-credentials
+          workspace: git-credentials
 
     - name: sonarqube-scan
       runAfter: ["git-clone"]
@@ -161,21 +178,27 @@ spec:
         - name: NEXUS_IMAGE
           value: $(params.NEXUS_IMAGE)
       workspaces:
-        - name: source
-          workspace: source 
+        - name: helm-chart
+          workspace: helm-chart
 
-    - name: helm-deploy
+    - name: commit-helm-changes
       runAfter: ["update-image"]
       taskRef:
-        name: helm-deploy
+        name: commit-helm-changes
         kind: Task
       params:
-        - name: RELEASE_NAME
-          value: $(params.RELEASE_NAME)
-        - name: CHART_DIR
-          value: $(params.CHART_DIR)
-        - name: NAMESPACE
-          value: $(params.NAMESPACE)
+        - name: GITHUB_EMAIL
+          value: $(params.GIT_EMAIL)
+        - name: GITHUB_USERNAME
+          value: $(params.GIT_USERNAME)
+        - name: HELM_FILE
+          value: $(params.HELM_FILE)
+        - name: COMMIT_MESSAGE
+          value: "Update image to $(params.NEXUS_IMAGE)"
+        - name: GITHUB_HELM_URL
+          value: $(params.GITHUB_HELM_URL)
       workspaces:
-        - name: source
-          workspace: source
+        - name: helm-chart
+          workspace: helm-chart
+        - name: git-credentials
+          workspace: git-credentials

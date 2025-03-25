@@ -1,0 +1,36 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: commit-helm-changes
+  namespace: lmw-fitness
+spec:
+  params:
+    - name: GIT_EMAIL
+      type: string
+      description: "Email for the git commit"
+    - name: GIT_USERNAME
+      type: string
+      description: "Username for the git commit"
+    - name: HELM_FILE
+      type: string
+      description: "Path to the Helm chart file to commit"
+    - name: COMMIT_MESSAGE
+      type: string
+      description: "Commit message for the image update"
+    - name: GITHUB_HELM_URL
+      type: string
+      description: "URL of the Helm chart repository"
+  steps:
+    - name: commit-helm-changes
+      image: alpine/git
+      workingDir: $(workspaces.helm-chart.path)
+      script: |
+        #!/bin/sh
+        git config user.email "${params.GIT_EMAIL}"
+        git config user.name "${params.GIT_USERNAME}"
+        git add $(params.HELM_FILE)
+        git commit -m "$(params.COMMIT_MESSAGE)"
+        git push $(params.GITHUB_HELM_URL)
+  workspaces:
+    - name: helm-chart
+    - name: git-credentials 

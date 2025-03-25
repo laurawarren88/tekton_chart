@@ -17,11 +17,11 @@ spec:
   steps:
     - name: update-image
       image: mikefarah/yq
-      workingDir: $(workspaces.source.path)
+      workingDir: $(workspaces.helm-chart.path)
       script: |
         yq -i '$(params.VALUES_PATH_TO_IMAGE) = "$(params.NEXUS_IMAGE)"' $(params.VALUES_MANIFEST_PATH)
   workspaces:
-    - name: source
+    - name: helm-chart
   results:
     - name: IMAGE 
       description: The name of the image that was built
