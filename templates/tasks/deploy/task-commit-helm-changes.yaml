@@ -5,37 +5,32 @@ metadata:
   namespace: lmw-fitness
 spec:
   params:
-  - name: GITHUB_EMAIL
-    type: string
-    description: "Email for the git commit"
-  - name: GITHUB_USERNAME
-    type: string
-    description: "Username for the git commit"
-  - name: HELM_FILE
-    type: string
-    description: "Path to the Helm chart file to commit"
-  - name: COMMIT_MESSAGE
-    type: string
-    description: "Commit message for the image update"
-  - name: GITHUB_HELM_URL
-    type: string
-    description: "URL of the Helm chart repository"
+    - name: HELM_FILE
+      type: string
+      description: "Path to the Helm chart file to commit"
+      default: "."  # Commit all files in the current directory
+    - name: GITHUB_HELM_URL
+      type: string
+      description: "URL of the Helm chart repository"
+    - name: COMMIT_MESSAGE
+      type: string
+      description: "The commit message for the Helm chart update"
   steps:
-  - name: commit-helm-changes
-    image: alpine/git
-    workingDir: $(workspaces.helm-chart.path)
-    script: |
-      #!/bin/sh
-      set -e
-      echo "GITHUB_EMAIL: ${params.GITHUB_EMAIL}"
-      echo "GITHUB_USERNAME: ${params.GITHUB_USERNAME}"
-      echo "HELM_FILE: ${params.HELM_FILE}"
-      echo "COMMIT_MESSAGE: ${params.COMMIT_MESSAGE}"
-      git config user.email ${params.GITHUB_EMAIL}
-      git config user.name ${params.GITHUB_USERNAME}
-      git add $(params.HELM_FILE)
-      git commit -m $(params.COMMIT_MESSAGE)
-      git push $(params.GITHUB_HELM_URL)
+    - name: commit-helm-changes
+      image: alpine/git
+      workingDir: $(workspaces.helm-chart.path)
+      script: |
+        #!/bin/sh
+        set -e
+        echo "HELM_FILE: ${params.HELM_FILE}"
+        echo "GITHUB_HELM_URL: ${params.GITHUB_HELM_URL}"
+        
+        git config --global credential.helper store
+        echo "https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com" > ~/.git-credentials
+        
+        git add "${params.HELM_FILE}"  
+        git commit -m "${params.COMMIT_MESSAGE}"
+        git push "${params.GITHUB_HELM_URL}"
   workspaces:
-  - name: helm-chart
-  - name: git-credentials 
+    - name: helm-chart
+    - name: git-credentials 

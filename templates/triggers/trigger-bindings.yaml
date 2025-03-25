@@ -29,10 +29,6 @@ spec:
       value: "values.yaml"
     - name: SERVICE_TYPE
       value: $(body.repository.description)
-    - name: GITHUB_EMAIL
-      value: laura@enterpriseautomation.co.uk
-    - name: GITHUB_USERNAME
-      value: laurawarren88
     - name: HELM_FILE
       value: "."
     - name: COMMIT_MESSAGE
