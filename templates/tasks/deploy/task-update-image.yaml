@@ -8,9 +8,9 @@ spec:
     - name: VALUES_MANIFEST_PATH
       type: string
       description: Path to the helm values to change image name
-    - name: VALUES_PATH_TO_IMAGE
+    - name: SERVICE_TYPE
       type: string
-      description: The path to the image to replace in the yaml manifest (arg to yq)
+      description: The type of service
     - name: NEXUS_IMAGE 
       type: string
       description: The name of the image that was built 
@@ -19,7 +19,12 @@ spec:
       image: mikefarah/yq
       workingDir: $(workspaces.helm-chart.path)
       script: |
-        yq -i '$(params.VALUES_PATH_TO_IMAGE) = "$(params.NEXUS_IMAGE)"' $(params.VALUES_MANIFEST_PATH)
+        #!/bin/sh
+        if [ "$(params.SERVICE_TYPE)" = "backend" ]; then
+          yq -i '.api.image.repository = "$(params.NEXUS_IMAGE)"' $(params.VALUES_MANIFEST_PATH)
+        else
+          yq -i '.webserver.image.repository = "$(params.NEXUS_IMAGE)"' $(params.VALUES_MANIFEST_PATH)
+        fi
   workspaces:
     - name: helm-chart
   results:

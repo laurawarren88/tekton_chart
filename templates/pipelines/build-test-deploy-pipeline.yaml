@@ -178,27 +178,18 @@ spec:
         - name: source
           workspace: source
       
-    - name: determine-path
+    - name: update-image
       runAfter: 
         - trivy-scan
         - go-test
-      taskRef:
-        name: determine-path
-        kind: Task
-      params:
-        - name: SERVICE_TYPE
-          value: $(params.SERVICE_TYPE)
-
-    - name: update-image
-      runAfter: ["determine-path"]
       taskRef:
         name: update-image
         kind: Task
       params:
         - name: VALUES_MANIFEST_PATH
           value: $(params.VALUES_MANIFEST_PATH)
-        - name: VALUES_PATH_TO_IMAGE
-          value: $(tasks.determine-path.results.IMAGE_PATH)
+        - name: SERVICE_TYPE
+          value: $(params.SERVICE_TYPE)
         - name: NEXUS_IMAGE
           value: $(params.NEXUS_IMAGE)
       workspaces:
