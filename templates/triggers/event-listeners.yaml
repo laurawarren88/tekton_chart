@@ -19,5 +19,7 @@ spec:
                 secretKey: secret
             - name: eventTypes
               value: ["push"]
+            - name: addChangedFiles
+              value: ["true"]
       template:
         ref: trigger-template

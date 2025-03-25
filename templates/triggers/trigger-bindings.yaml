@@ -29,8 +29,6 @@ spec:
       value: "lmw-helm-chart/values.yaml"
     - name: SERVICE_TYPE
       value: $(body.repository.description)
-    - name: VALUES_PATH_TO_IMAGE
-      value: ".image.repository"
     - name: RELEASE_NAME
       value: $(body.repository.name)
     - name: CHART_DIR
