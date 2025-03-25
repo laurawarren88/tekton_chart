@@ -44,9 +44,6 @@ spec:
     - name: SERVICE_TYPE
       type: string
       description: "The type of service to deploy"
-    - name: VALUES_PATH_TO_IMAGE
-      type: string
-      description: "Path to the image field in the values file"
     - name: RELEASE_NAME
       type: string
       description: "The name of the Helm release"
