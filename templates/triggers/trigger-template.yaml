@@ -35,9 +35,9 @@ spec:
     description: The directory containing the Helm chart
   - name: NAMESPACE
     description: The Kubernetes namespace
-  - name: GIT_EMAIL
+  - name: GITHUB_EMAIL
     description: The email address for the git commit
-  - name: GIT_USERNAME
+  - name: GITHUB_USERNAME
     description: The username for the git commit
   - name: HELM_FILE
     description: The path to the Helm file to commit
@@ -83,9 +83,9 @@ spec:
         value: $(tt.params.CHART_DIR)
       - name: NAMESPACE
         value: $(tt.params.NAMESPACE)
-      - name: GIT_EMAIL
+      - name: GITHUB_EMAIL
         value: $(tt.params.GIT_EMAIL)
-      - name: GIT_USERNAME
+      - name: GITHUB_USERNAME
         value: $(tt.params.GIT_USERNAME)
       - name: HELM_FILE
         value: $(tt.params.HELM_FILE)

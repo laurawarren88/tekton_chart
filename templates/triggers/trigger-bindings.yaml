@@ -37,9 +37,9 @@ spec:
       value: "helm_chart"
     - name: NAMESPACE
       value: "lmw-fitness"
-    - name: GIT_EMAIL
+    - name: GITHUB_EMAIL
       value: laura@enterpriseautomation.co.uk
-    - name: GIT_USERNAME
+    - name: GITHUB_USERNAME
       value: laurawarren88
     - name: HELM_FILE
       value: "lmw-helm-chart/"

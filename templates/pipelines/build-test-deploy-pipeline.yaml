@@ -53,6 +53,18 @@ spec:
     - name: NAMESPACE
       type: string
       description: "Kubernetes namespace for the release"
+    - name: GITHUB_EMAIL
+      type: string
+      description: "The email address for the git commit"
+    - name: GITHUB_USERNAME
+      type: string
+      description: "The username for the git commit"
+    - name: HELM_FILE
+      type: string
+      description: "Path to the Helm file to commit"
+    - name: COMMIT_MESSAGE
+      type: string
+      description: "The commit message for the image update"
   workspaces:
     - name: git-credentials
     - name: helm-chart
