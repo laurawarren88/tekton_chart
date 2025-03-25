@@ -31,11 +31,11 @@ spec:
         echo "GITHUB_USERNAME: ${params.GITHUB_USERNAME}"
         echo "HELM_FILE: ${params.HELM_FILE}"
         echo "COMMIT_MESSAGE: ${params.COMMIT_MESSAGE}"
-        git config user.email "${params.GITHUB_EMAIL}"
-        git config user.name "${params.GITHUB_USERNAME}"
-        git add "$(params.HELM_FILE)"
-        git commit -m "$(params.COMMIT_MESSAGE)"
-        git push "$(params.GITHUB_HELM_URL)"
+        git config user.email ${params.GITHUB_EMAIL}
+        git config user.name ${params.GITHUB_USERNAME}
+        git add $(params.HELM_FILE)
+        git commit -m $(params.COMMIT_MESSAGE)
+        git push $(params.GITHUB_HELM_URL)
   workspaces:
     - name: helm-chart
     - name: git-credentials 
