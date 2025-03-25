@@ -27,5 +27,7 @@ spec:
               value: ["backend-go-fitness-locator"]
             - name: debug
               value: "true"
+            - name: validatePayload
+              value: ["false"]
       template:
         ref: trigger-template
