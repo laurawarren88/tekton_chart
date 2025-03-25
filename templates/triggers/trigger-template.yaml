@@ -29,12 +29,6 @@ spec:
     description: The Helm values file
   - name: SERVICE_TYPE
     description: The type of service to deploy
-  - name: RELEASE_NAME
-    description: The name of the Helm release
-  - name: CHART_DIR
-    description: The directory containing the Helm chart
-  - name: NAMESPACE
-    description: The Kubernetes namespace
   - name: GITHUB_EMAIL
     description: The email address for the git commit
   - name: GITHUB_USERNAME
@@ -77,12 +71,6 @@ spec:
         value: $(tt.params.VALUES_MANIFEST_PATH)
       - name: SERVICE_TYPE
         value: $(tt.params.SERVICE_TYPE)
-      - name: RELEASE_NAME
-        value: $(tt.params.RELEASE_NAME)
-      - name: CHART_DIR
-        value: $(tt.params.CHART_DIR)
-      - name: NAMESPACE
-        value: $(tt.params.NAMESPACE)
       - name: GITHUB_EMAIL
         value: $(tt.params.GITHUB_EMAIL)
       - name: GITHUB_USERNAME

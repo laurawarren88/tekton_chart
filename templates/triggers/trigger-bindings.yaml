@@ -29,18 +29,12 @@ spec:
       value: "values.yaml"
     - name: SERVICE_TYPE
       value: $(body.repository.description)
-    - name: RELEASE_NAME
-      value: $(body.repository.name)
-    - name: CHART_DIR
-      value: "helm_chart"
-    - name: NAMESPACE
-      value: "lmw-fitness"
     - name: GITHUB_EMAIL
       value: laura@enterpriseautomation.co.uk
     - name: GITHUB_USERNAME
       value: laurawarren88
     - name: HELM_FILE
-      value: "lmw-helm-chart/"
+      value: "helm-chart/"
     - name: COMMIT_MESSAGE
       value: "Update image in Helm chart"
 

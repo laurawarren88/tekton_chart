@@ -44,15 +44,6 @@ spec:
     - name: SERVICE_TYPE
       type: string
       description: "The type of service to deploy"
-    - name: RELEASE_NAME
-      type: string
-      description: "The name of the Helm release"
-    - name: CHART_DIR
-      type: string
-      description: "Directory containing the Helm chart"
-    - name: NAMESPACE
-      type: string
-      description: "Kubernetes namespace for the release"
     - name: GITHUB_EMAIL
       type: string
       description: "The email address for the git commit"
