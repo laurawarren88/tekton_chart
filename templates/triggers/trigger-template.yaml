@@ -27,6 +27,8 @@ spec:
     description: The severity levels to scan for vulnerabilities
   - name: VALUES_MANIFEST_PATH
     description: The Helm values file
+  - name: SERVICE_TYPE
+    description: The type of service to deploy
   - name: VALUES_PATH_TO_IMAGE
     description: The path to the image field in the values file
   - name: RELEASE_NAME
@@ -75,6 +77,8 @@ spec:
         value: $(tt.params.TRIVY_SEVERITY)
       - name: VALUES_MANIFEST_PATH
         value: $(tt.params.VALUES_MANIFEST_PATH)
+      - name: SERVICE_TYPE
+        value: $(tt.params.SERVICE_TYPE)
       - name: VALUES_PATH_TO_IMAGE
         value: $(tt.params.VALUES_PATH_TO_IMAGE)
       - name: RELEASE_NAME

@@ -41,6 +41,9 @@ spec:
     - name: VALUES_MANIFEST_PATH
       type: string
       description: "Path to the Helm values file"
+    - name: SERVICE_TYPE
+      type: string
+      description: "The type of service to deploy"
     - name: VALUES_PATH_TO_IMAGE
       type: string
       description: "Path to the image field in the values file"
@@ -65,9 +68,6 @@ spec:
     - name: COMMIT_MESSAGE
       type: string
       description: "The commit message for the image update"
-    - name: SERVICE_TYPE
-      type: string
-      description: "The type of service"
   workspaces:
     - name: git-credentials
     - name: helm-chart
