@@ -185,4 +185,3 @@ kubectl logs <pod-name> -n your-namespace-name
 ## Conclusion
 
 This Tekton pipeline provides a CI/CD workflow for building, pushing and deploying applications automatically. Modify parameters and manifests as needed for your environment.
-# tekton_chart

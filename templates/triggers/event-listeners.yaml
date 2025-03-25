@@ -25,5 +25,7 @@ spec:
               value: ["laurawarren88"]
             - name: githubRepo
               value: ["backend-go-fitness-locator"]
+            - name: debug
+              value: "true"
       template:
         ref: trigger-template
