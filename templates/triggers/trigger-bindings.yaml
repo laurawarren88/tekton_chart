@@ -34,7 +34,7 @@ spec:
     - name: GITHUB_USERNAME
       value: laurawarren88
     - name: HELM_FILE
-      value: "helm-chart/"
+      value: "."
     - name: COMMIT_MESSAGE
       value: "Update image in Helm chart"
 
