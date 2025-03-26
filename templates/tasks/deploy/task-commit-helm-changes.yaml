@@ -26,9 +26,13 @@ spec:
         git config --global user.email "laura@enterpriseautomation.co.uk"
         git config --global user.name "laurawarren88"
 
-        echo "https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com" > .git-credentials  
+        # Copy the .git-credentials from the mounted secret to the home directory
+        cp /workspace/git-credentials/.git-credentials ~/.git-credentials
+        cp /workspace/git-credentials/.gitconfig ~/.gitconfig
 
-        cat .git-credentials
+        # Debugging output
+        echo "Contents of .git-credentials:"
+        cat ~/.git-credentials
 
         git config --global --list
         git config --global credential.helper store
