@@ -22,8 +22,8 @@ spec:
         #!/bin/sh
         set -e     
 
-        GITHUB_USERNAME=$(cat /workspace/git-credentials/GITHUB_USERNAME | base64 --decode)
-        GITHUB_EMAIL=$(cat /workspace/git-credentials/GITHUB_EMAIL | base64 --decode)
+        GITHUB_USERNAME=$(cat /workspace/git-credentials/GITHUB_USERNAME | base64 -d)
+        GITHUB_EMAIL=$(cat /workspace/git-credentials/GITHUB_EMAIL | base64 -d)
         
         git config --global user.email "$GITHUB_EMAIL"
         git config --global user.name "$GITHUB_USERNAME"
