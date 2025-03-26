@@ -21,16 +21,12 @@ spec:
       workingDir: $(workspaces.helm-chart.path)
       script: |
         #!/bin/sh
-        set -e
-        echo "HELM_FILE: ${params.HELM_FILE}"
-        echo "GITHUB_HELM_URL: ${params.GITHUB_HELM_URL}"
-        
+        set -e        
         git config --global credential.helper store
-        echo "https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com" > ~/.git-credentials
         cd $(workspaces.helm-chart.path)
-        git add "${params.HELM_FILE}"  
-        git commit -m "${params.COMMIT_MESSAGE}"
-        git push "${params.GITHUB_HELM_URL}"
+        git add . 
+        git commit -m "Image updated"
+        git push https://github.com/laurawarren88/helm-chart.git
   workspaces:
     - name: helm-chart
     - name: git-credentials 
