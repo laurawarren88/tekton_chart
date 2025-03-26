@@ -21,7 +21,9 @@ spec:
       workingDir: $(workspaces.helm-chart.path)
       script: |
         #!/bin/sh
-        set -e        
+        set -e     
+        git config --global user.email "laura@enterpriseautomation.co.uk"
+        git config --global user.name "laurawarren88"    
         git config --global credential.helper store
         cd $(workspaces.helm-chart.path)
         git add . 
