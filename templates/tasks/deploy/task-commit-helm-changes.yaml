@@ -26,10 +26,9 @@ spec:
         git config --global user.email "laura@enterpriseautomation.co.uk"
         git config --global user.name "laurawarren88"
 
-        cat ~/.git-credentials
-        echo "https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com" > ~/.git-credentials  
+        echo "https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com" > .git-credentials  
 
-        cat ~/.git-credentials
+        cat .git-credentials
 
         git config --global --list
         git config --global credential.helper store
