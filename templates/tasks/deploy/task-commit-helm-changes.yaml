@@ -26,10 +26,15 @@ spec:
         git config --global user.email "laura@enterpriseautomation.co.uk"
         git config --global user.name "laurawarren88"
 
-        echo "https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com" > ~/.git-credentials   
+        cat ~/.git-credentials
+        echo "https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com" > ~/.git-credentials  
+
+        cat ~/.git-credentials
+
+        git config --global --list
         git config --global credential.helper store
         cd $(workspaces.helm-chart.path)
-        
+
         git add . 
         git commit -m "Image updated"
         git push https://github.com/laurawarren88/helm-chart.git
