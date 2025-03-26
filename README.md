@@ -6,23 +6,20 @@ This repository contains a Tekton Pipeline to automate the process of cloning a 
 
 This Tekton pipeline consists of the following components:
 
-- TriggerTemplate: Defines the pipeline parameters and creates a PipelineRun.
-
-- TriggerBinding: Binds incoming webhook payload values to pipeline parameters.
-
-- EventListener: Listens for GitHub events and triggers the pipeline.
-
-- Pipeline: Defines the sequence of tasks to execute.
+- **TriggerTemplate**: Defines the pipeline parameters and creates a PipelineRun.
+- **TriggerBinding**: Binds incoming webhook payload values to pipeline parameters.
+- **EventListener**: Listens for GitHub events and triggers the pipeline.
+- **Pipeline**: Defines the sequence of tasks to execute.
 
 ## Tasks
 
-- git-clone: Clones the Git repository.
-
-- docker-build: Builds and pushes the Docker image using Kaniko.
-
-- kubectl-deploy: Updates Kubernetes deployment manifests with the new image.
-
-- kubectl-run: Applies additional Kubernetes manifests.
+- **git-clone**: Clones the Git repository.
+- **docker-build**: Builds and pushes the Docker image using Kaniko.
+- **kubectl-deploy**: Updates Kubernetes deployment manifests with the new image.
+- **kubectl-run**: Applies additional Kubernetes manifests.
+- **commit-helm-changes**: Commits changes to the Helm chart and pushes them to the GitHub repository.
+- **update-image**: Updates image tags in Kubernetes manifests based on the latest commit.
+- **determine-path**: Determines the path for the Helm chart based on the incoming webhook payload.
 
 ## Prerequisites
 
@@ -40,7 +37,6 @@ Tekton Triggers installed:
 
 ```bash
 kubectl apply -f https://storage.googleapis.com/tekton-releases/triggers/latest/release.yaml
-
 kubectl apply -f https://storage.googleapis.com/tekton-releases/triggers/latest/interceptors.yaml
 ```
 
@@ -90,6 +86,9 @@ k apply -f task-git-clone.yaml
 k apply -f task-docker-build.yaml
 k apply -f task-kubectl-deploy.yaml
 k apply -f task-kubectl-run.yaml
+k apply -f task-commit-helm-changes.yaml
+k apply -f task-update-image.yaml
+k apply -f task-determine-path.yaml
 ```
 
 ## 3. Configure GitHub Webhook
@@ -99,15 +98,10 @@ k apply -f task-kubectl-run.yaml
 Add a new webhook with:
 
 - Payload URL same as your ingress host: <https://tekton-trigger-ingress-host>
-
 - Content type: application/json
-
 - Secret: Optional
-
 - Events to trigger: Select your desired option
-
 - Check Active
-
 - Click Update webhook
 
 If you've added a secret, you need to ensure the secret is set in the Tekton pipeline:
@@ -120,7 +114,7 @@ k create secret generic github-webhook-secret --from-literal=secretToken=the-sec
 
 Push a new commit to your GitHub repository to trigger the pipeline.
 
-## 6. Check Pipeline Status
+## 5. Check Pipeline Status
 
 Monitor the pipeline execution using:
 
@@ -137,16 +131,18 @@ kubectl logs -l tekton.dev/pipelineRun=<pipeline-run-name> --all-containers
 
 ## Pipeline Parameters
 
-| Parameter Name | Description |
-| :---: | :---: |
-| github-clone-url | GitHub repository URL |
-| IMAGE | Docker image reference |
-| DOCKERFILE | Path to the Dockerfile |
-| CONTEXT | Build context for Kaniko |
-| MANIFEST_PATH | Kubernetes manifest file |
-| YAML_PATH_TO_IMAGE | Path to update the image in manifest |
-| ACTION | kubectl action (apply/delete) |
-| KUBENETES_DIR | Kubernetes manifests directory |
+
+| Parameter Name      | Description |
+| :------------------ | :---------- |
+| github-clone-url    | GitHub repository URL |
+| IMAGE               | Docker image reference |
+| DOCKERFILE          | Path to the Dockerfile |
+| CONTEXT             | Build context for Kaniko |
+| MANIFEST_PATH       | Kubernetes manifest file |
+| YAML_PATH_TO_IMAGE  | Path to update the image in manifest |
+| ACTION              | kubectl action (apply/delete) |
+| KUBENETES_DIR       | Kubernetes manifests directory |
+| COMMIT_MESSAGE      | Commit message for Helm chart updates |
 
 ## Troubleshooting
 
